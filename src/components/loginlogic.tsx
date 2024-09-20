@@ -15,14 +15,17 @@ import axios from 'axios';
 // import for cookies
 import Cookies from 'js-cookie';
 
+const csrfToken = Cookies.get('csrftoken');
+
 interface Props {
     onSubmit: string;
     e: string;
     error: any;
     username: string;
-  }
+}
 
 const loginlogic = ({ onSubmit }: any) => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [formData, setFormData] = useState<Props[]>({
         username: '',
@@ -40,16 +43,15 @@ const loginlogic = ({ onSubmit }: any) => {
         });
     };
 
-    const checkLogged = () =>{
-        const sessionid = Cookies.get('sessionid');
-            if(sessionid){
-                // if session exist get out of the log in page
-                router.push('/');
-            }
-    }
-
-    // run the checklogged in user function
-    checkLogged();
+    useEffect(() => {
+        const loggedIn = Cookies.get('access_token');
+        if (loggedIn) {
+            // set is logged in true
+            setIsLoggedIn(true);
+            // successfully checked if the user is logged in
+            router.push('/');
+        }
+    }, []);
 
     const handleSubmit = async (e:any) => {
         e.preventDefault(); // Prevent the default form submission (which would be a GET request)
@@ -57,17 +59,27 @@ const loginlogic = ({ onSubmit }: any) => {
         const data = {
             username: e.target.username.value,
             password: e.target.password.value
-          };
+        };
     
-        // console.log('Sending data:', data);
-        
         // let  me try to use axios
         try{
-            const response = await axios.post('http://127.0.0.1:8000/api/usr/login', data);
+            // const response = await axios.post('http://127.0.0.1:8000/api/usr/login', data, {
+            //     headers: {
+            //         'X-CSRFToken': csrfToken,
+            //     },
+            // });
 
-            if(response.data.sessionid){
-                Cookies.set('sessionid', response.data.sessionid, { expires: 1 });
-                // console.log('Session created:', response.data.sessionid);
+            const response = await axios.post('http://127.0.0.1:8000/api/token/', data,{
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+            });
+
+            Cookies.set('access_token', response.data.access, { expires: 1 });
+            Cookies.set('refresh_token', response.data.refresh, { expires: 7 });
+
+            // get token
+            if(response.data.access){
                 // Handle successful response
                 setError('Success'); // Clear any previous errors
 
