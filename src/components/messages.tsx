@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 interface Message {
     message: string;
@@ -7,10 +8,13 @@ interface Message {
 
 const MessagesPrint: React.FC = () => {
     const [messages, setMessages] = useState<Message[]>([]);
+    const router = useRouter();
+    const { roomId } = router.query;
+    const [initialMessages, setInitialMessages] = useState([]);
 
     useEffect(() => {
         // Fetch messages from the API
-        axios.get('http://localhost:8000/api/feedback/msgs')
+        axios.get(`http://localhost:8000/api/feedback-room/${roomId}/messages/`)
             .then(response => {
                 if (response.data && Array.isArray(response.data)) {
                     setMessages(response.data);
@@ -27,11 +31,12 @@ const MessagesPrint: React.FC = () => {
     return (
         <div>
             <h1>Messages</h1>
-            <ul>
-                {messages.map((message, index) => (
-                    <li key={index}>{message.message}</li>
-                ))}
-            </ul>
+            {messages.map((message, index) => (
+                <ul key={index}>
+                    <li>{message.user}</li>
+                    <li>{message.message}</li>
+                </ul>
+            ))}
         </div>
     );
 };

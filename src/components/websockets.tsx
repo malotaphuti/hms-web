@@ -26,12 +26,12 @@ const WebSocketFile: React.FC<WebSocketFileProps> =({ room,chatId }) => {
     // Generate a chatId if not present
     // const newChatId = 'feed';
     
-    const chatId = room;
+    const user_feed = room;
 
-    if (chatId) {
+    if (user_feed) {
       console.log("chartID is:", room);
       // Initialize WebSocket with generated chatId
-      test_sockRef.current = new WebSocket(`ws://localhost:8000/ws/feedback/${chatId}/`);
+      test_sockRef.current = new WebSocket(`ws://localhost:8000/ws/feedback/${user_feed}/`);
 
       test_sockRef.current.onopen = () => {
         console.log('Connected to WebSocket server');
@@ -41,9 +41,7 @@ const WebSocketFile: React.FC<WebSocketFileProps> =({ room,chatId }) => {
       // Event listener for receiving messages from the server
       test_sockRef.current.onmessage = (e) => {
         const data = JSON.parse(e.data);
-        // const message = data.message;
-        // setMessages((prevMessages) => [...prevMessages, message]);
-
+      
         if (data && data.message) {
           const message = data.message; // Ensure this is a string
           setMessages((prevMessages) => [...prevMessages, message ]);
