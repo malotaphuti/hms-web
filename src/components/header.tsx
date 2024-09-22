@@ -2,90 +2,72 @@
 
 // import Image from "next/image";
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
-import { refreshToken } from './utils/auth';
+import { refreshToken } from '@/app/utils/refresh';
+
+import checkUserAuthentication from '@/app/utils/authentication';
+import useAuth from '@/app/hooks/useAuth';
 
 // import for cookies
 import Cookies from 'js-cookie';
 
 function header() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState(null);
-    const router = useRouter();
+    const { user, loggedIn, loading, error } = useAuth();
 
-    useEffect(() => {
-        const loggedIn = Cookies.get('access_token');
-        if (loggedIn) {
-            axios
-                .get('http://127.0.0.1:8000/api/usr/profile', {
-                    headers: {
-                        Authorization: `Bearer ${loggedIn}`,
-                    },
-                })
-                .then(response => {
-                    setUser(response.data);
-                })
-                .catch(async error => {
-                    if (error.response.status === 401) {
-                        await refreshToken();
-                        const newToken = Cookies.get('access_token');
+    if (loading) {
+        return <p>Loading...</p>; // Display a loading state
+    }
 
-                        if (newToken) {
-                            axios
-                                .get('http://127.0.0.1:8000/api/user/profile', {
-                                    headers: {
-                                        Authorization: `Bearer ${newToken}`,
-                                    },
-                                })
-                                .then(response => {
-                                    setUser(response.data);
-                                })
-                                .catch(err => {
-                                    console.error(
-                                        'Failed to fetch user data after refresh:',
-                                        err,
-                                    );
-                                });
-                        }
-                    } else {
-                        console.error('Failed to fetch user data:', error);
-                    }
-                });
-        }
-        if (loggedIn) {
-            // set is logged in true
-            setIsLoggedIn(true);
-            // successfully checked if the user is logged in
-            router.push('/');
-        }
-    }, []);
+    if (error) {
+        return <p>Error: {error}</p>; // Display error if something went wrong
+    }
 
     return (
-        <div className="w-full h-[100px] flex flex-row">
-            <div className="flex flex-row justify-end">
-                {isLoggedIn ? (
+        <div className="container mx-auto w-full h-[100px] flex flex-row">
+            <div className="flex flex-col justify-center">
+                {loading ? (
+                    <div>Loading...</div>
+                ) : error ? (
+                    <div>Error: {error}</div>
+                ) : loggedIn ? (
                     <div>
                         {user ? (
                             <div>
                                 <h1>Welcome back, {user.first_name}!</h1>
+                                {/* You can include more user details if needed */}
                                 {/* <p>Email: {user.email}</p> */}
                             </div>
                         ) : (
-                            <div>no user data...</div>
+                            <div>No user data...</div>
                         )}
                     </div>
                 ) : (
-                    <div>
-                        Please log in to see this content.
+                    <div className="flex flex-row justify-start">
                         <div
-                            className="flex flex-row justify-center 
-                            w-[200px] h-full rounded-lg bg-purple-700 text-white
-                        "
+                            className="flex flex-row justify-center ml-4 mr-4 
+            w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-700"
                         >
-                            <Link href="/login">Login here</Link>
+                            <Link
+                                href="/"
+                                className="flex flex-col justify-center"
+                            >
+                                Home
+                            </Link>
+                        </div>
+
+                        <div
+                            className="flex flex-row justify-center ml-4 mr-4 
+            w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-900"
+                        >
+                            <Link
+                                href="/login"
+                                className="flex flex-col justify-center"
+                            >
+                                Login here
+                            </Link>
                         </div>
                     </div>
                 )}

@@ -11,7 +11,7 @@ import Header from '@/components/header';
 // axios
 import axios from 'axios';
 
-import { refreshToken } from './utils/auth';
+import { refreshToken } from './utils/refresh';
 
 // import for cookies
 import Cookies from 'js-cookie';
@@ -69,9 +69,22 @@ export default function Home() {
         }
     }, []);
     return (
-        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+        <div className="grid grid-rows-[20px_1fr_20px] min-h-screen gap-16 sm:p-3 font-[family-name:var(--font-geist-sans)]">
             <Header />
-            <h1 className="">Home Page</h1>
+            <div className="flex justify-center flex-row w-full">
+                <div
+                    className="flex flex-row justify-center ml-4 mr-4 
+                            w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-900"
+                >
+                    <Link
+                        href="http://localhost:8000/accounts/google/login/?process=login"
+                        className="flex flex-col justify-center"
+                    >
+                        google auth
+                    </Link>
+                </div>
+                <h1 className="">Home Page</h1>
+            </div>
         </div>
     );
 }

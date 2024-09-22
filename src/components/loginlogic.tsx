@@ -62,37 +62,34 @@ const loginlogic = ({ onSubmit }: any) => {
         };
     
         // let  me try to use axios
-        try{
-            // const response = await axios.post('http://127.0.0.1:8000/api/usr/login', data, {
-            //     headers: {
-            //         'X-CSRFToken': csrfToken,
-            //     },
-            // });
-
-            const response = await axios.post('http://127.0.0.1:8000/api/token/', data,{
-                headers: {
-                    'X-CSRFToken': csrfToken,
+        try {
+            const response = await axios.post(
+                'http://127.0.0.1:8000/api/token/',
+                data,
+                {
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                    },
                 },
-            });
+            );
 
             Cookies.set('access_token', response.data.access, { expires: 1 });
             Cookies.set('refresh_token', response.data.refresh, { expires: 7 });
 
             // get token
-            if(response.data.access){
+            if (response.data.access) {
                 // Handle successful response
                 setError('Success'); // Clear any previous errors
 
-                // wait 3 seconds before redirecting 
+                // wait 3 seconds before redirecting
                 const timer = setTimeout(() => {
                     router.push('/');
                 }, 3000);
-                
-            }else{
+            } else {
                 // console.log("Log in failed!");
                 setError('error: Log in failed!');
             }
-        }catch(error){
+        } catch (error) {
             if (axios.isAxiosError(error)) {
                 // console.error('Axios error message:', error.message);
                 // console.error('Axios error code:', error.code);
@@ -114,11 +111,11 @@ const loginlogic = ({ onSubmit }: any) => {
                     }, 1000);
                 }
             } else {
-            console.error('Unexpected error:', error);
+                console.error('Unexpected error:', error);
             }
         }
-      };
-  return (
+    };
+    return (
     
     <form onSubmit={handleSubmit}
         className='flex flex-col justify-center items-center'

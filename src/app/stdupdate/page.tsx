@@ -1,17 +1,23 @@
-import React from 'react'
+'use client';
 
-import UpdateNumberLogic from '@/components/updatenumberlogic'
+import React from 'react';
+
+import UpdateNumberLogic from '@/components/updatenumberlogic';
+
+// components
+import Header from '@/components/header';
 
 function UpdateStudentNumber() {
-  return (
-    <div>
-        <h1>please update student number below</h1>
-        
-        <div className='flex flex-col justify-center mt-10'>
-            <UpdateNumberLogic/>
+    return (
+        <div className="container mx-auto">
+            <Header />
+            <h1>please update student number below</h1>
+
+            <div className="flex flex-col justify-center mt-10">
+                <UpdateNumberLogic />
+            </div>
         </div>
-    </div>
-  )
+    );
 }
 
-export default UpdateStudentNumber
+export default UpdateStudentNumber;

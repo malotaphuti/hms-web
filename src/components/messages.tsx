@@ -4,17 +4,19 @@ import { useRouter } from 'next/router';
 
 interface Message {
     message: string;
-  }
+}
 
 const MessagesPrint: React.FC = () => {
     const [messages, setMessages] = useState<Message[]>([]);
-    const router = useRouter();
-    const { roomId } = router.query;
+    // const router = useRouter();
+    // const { roomId } = router.query;
+    const roomID = 1;
     const [initialMessages, setInitialMessages] = useState([]);
 
     useEffect(() => {
         // Fetch messages from the API
-        axios.get(`http://localhost:8000/api/feedback-room/${roomId}/messages/`)
+        axios
+            .get(`http://localhost:8000/api/feedback-room/${roomID}/messages/`)
             .then(response => {
                 if (response.data && Array.isArray(response.data)) {
                     setMessages(response.data);
@@ -24,8 +26,8 @@ const MessagesPrint: React.FC = () => {
                 }
             })
             .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+                console.error('Error fetching data:', error);
+            });
     }, []);
 
     return (

@@ -10,10 +10,10 @@ const FeedbackPage = () => {
 
     return (
         <div>
-            <h1 className='text-center mt-5'>Feedback for Room: {room}</h1>
+            <h1 className="text-center mt-5">Feedback for Room: {room}</h1>
             {/* Add your feedback content here */}
             <MessagesPrint />
-            <WebSocketFile room={room}/>
+            {/* <WebSocketFile room={room}/> */}
         </div>
     );
 };

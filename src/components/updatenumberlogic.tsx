@@ -17,13 +17,17 @@ function updatenumberlogic() {
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.patch('http://localhost:8000/usr/update-std-number', {
-                student_number: studentNumber,
-            }, {
-                headers: {
-                    'X-CSRFToken': csrfToken,
+            const response = await axios.patch(
+                'http://localhost:8000/api/usr/update-std-number',
+                {
+                    student_number: studentNumber,
                 },
-            });
+                {
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                    },
+                },
+            );
             console.log('Student number updated:', response.data);
         } catch (error) {
             console.error('Error updating student number:', error);
