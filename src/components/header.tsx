@@ -2,27 +2,41 @@
 
 // import Image from "next/image";
 import Link from 'next/link';
-import { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 import { refreshToken } from '@/app/utils/refresh';
 
 import checkUserAuthentication from '@/app/utils/authentication';
-import useAuth from '@/app/hooks/useAuth';
 
 // import for cookies
 import Cookies from 'js-cookie';
 
-function header() {
-    const { user, loggedIn, loading, error } = useAuth();
+// lazy component
+const Loading = React.lazy(() => import('@/app/loading'));
+// hooks
+import useAuth from '@/app/hooks/useAuth';
+// my components
+import Headerlinks from './headerlinks';
+// import Googlebutton from './googlebutton';
+
+export default function Header() {
+    const { user, loggedIn, loading, offline, error } = useAuth();
 
     if (loading) {
-        return <p>Loading...</p>; // Display a loading state
+        return <Loading />; // Display a loading state
+    }
+
+    if (offline) {
+        console.log('user is offline');
     }
 
     if (error) {
-        return <p>Error: {error}</p>; // Display error if something went wrong
+        console.log(`we have an error ${error}`); // Display error if something went wrong
+        Cookies.remove('access_token');
+        Cookies.remove('refresh_token');
+        console.log('Please Log in again');
     }
 
     return (
@@ -30,15 +44,35 @@ function header() {
             <div className="flex flex-col justify-center">
                 {loading ? (
                     <div>Loading...</div>
-                ) : error ? (
-                    <div>Error: {error}</div>
-                ) : loggedIn ? (
+                ) : offline ? (
+                    <div>
+                        <Headerlinks />
+                    </div>
+                ) : // : error ? (
+                //     <div>
+                //         <Headerlinks />
+                //     </div>
+                // )
+                loggedIn ? (
                     <div>
                         {user ? (
-                            <div>
-                                <h1>Welcome back, {user.first_name}!</h1>
+                            <div className="flex flex-row justify-center">
+                                <h1 className="flex flex-col justify-center">
+                                    Welcome back, {user.first_name}!
+                                </h1>
                                 {/* You can include more user details if needed */}
                                 {/* <p>Email: {user.email}</p> */}
+                                <div
+                                    className="flex flex-row justify-center ml-4 mr-4 
+                            w-[140px] h-[50px] rounded-[40px] text-white hover:bg-slate-900"
+                                >
+                                    <Link
+                                        href="/feedback/1"
+                                        className="flex flex-col justify-center"
+                                    >
+                                        feedback page
+                                    </Link>
+                                </div>
                             </div>
                         ) : (
                             <div>No user data...</div>
@@ -46,7 +80,7 @@ function header() {
                     </div>
                 ) : (
                     <div className="flex flex-row justify-start">
-                        <div
+                        {/* <div
                             className="flex flex-row justify-center ml-4 mr-4 
             w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-700"
                         >
@@ -68,7 +102,7 @@ function header() {
                             >
                                 Login here
                             </Link>
-                        </div>
+                        </div> */}
                     </div>
                 )}
             </div>
@@ -76,4 +110,3 @@ function header() {
     );
 }
 
-export default header;

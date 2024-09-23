@@ -14,6 +14,7 @@ interface AuthState {
     user: User | null;
     loggedIn: boolean;
     loading: boolean;
+    offline: boolean,
     error: string | null;
 }
 
@@ -22,6 +23,7 @@ const useAuth = () => {
         user: null,
         loggedIn: false,
         loading: true,
+        offline: true,
         error: null,
     });
 
@@ -43,6 +45,7 @@ const useAuth = () => {
                 user: response.data,
                 loggedIn: true,
                 loading: false,
+                offline: false,
                 error: null,
             });
         } catch (error: any) {
@@ -63,19 +66,21 @@ const useAuth = () => {
                             user: retryResponse.data,
                             loggedIn: true,
                             loading: false,
+                            offline: false,
                             error: null,
                         });
                     } else {
-                        setAuthState({ user: null, loggedIn: false, loading: false, error: 'Token refresh failed' });
+                        setAuthState({ user: null, loggedIn: false, loading: false,offline: true, error: 'Token refresh failed' });
                     }
                 } catch (refreshError) {
-                    setAuthState({ user: null, loggedIn: false, loading: false, error: 'Token refresh failed' });
+                    setAuthState({ user: null, loggedIn: false, loading: false,offline: true, error: 'Token refresh failed' });
                 }
             } else {
                 setAuthState({
                     user: null,
                     loggedIn: false,
                     loading: false,
+                    offline: true,
                     error: error.message || 'Error fetching user data',
                 });
             }
