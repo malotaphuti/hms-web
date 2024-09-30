@@ -6,9 +6,9 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
-import { refreshToken } from '@/app/utils/refresh';
+import { refreshToken } from '@/app/api/refresh';
 
-import checkUserAuthentication from '@/app/utils/authentication';
+import checkUserAuthentication from '@/app/api/authentication';
 
 // import for cookies
 import Cookies from 'js-cookie';
@@ -16,7 +16,7 @@ import Cookies from 'js-cookie';
 // lazy component
 const Loading = React.lazy(() => import('@/app/loading'));
 // hooks
-import useAuth from '@/app/hooks/useAuth';
+import useAuth from '@/app/api/useAuth';
 // my components
 import Headerlinks from './headerlinks';
 // import Googlebutton from './googlebutton';

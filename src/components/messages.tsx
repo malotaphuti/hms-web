@@ -16,7 +16,7 @@ const MessagesPrint: React.FC = () => {
     useEffect(() => {
         // Fetch messages from the API
         axios
-            .get(`http://localhost:8000/api/feedback-room/${roomID}/messages/`)
+            .get(`http://localhost:8000/api/feedback//rooms`)
             .then(response => {
                 if (response.data && Array.isArray(response.data)) {
                     setMessages(response.data);
@@ -35,7 +35,7 @@ const MessagesPrint: React.FC = () => {
             <h1>Messages</h1>
             {messages.map((message, index) => (
                 <ul key={index}>
-                    <li>{message.user}</li>
+                    <li>{message.sender}</li>
                     <li>{message.message}</li>
                 </ul>
             ))}

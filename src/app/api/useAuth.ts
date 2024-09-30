@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { refreshToken } from '@/app/utils/refresh';
+import { refreshToken } from '@/app/api/refresh';
 
 interface User {
     id: number;

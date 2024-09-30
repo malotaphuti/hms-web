@@ -11,7 +11,7 @@ import Header from '@/components/header';
 // axios
 import axios from 'axios';
 
-import { refreshToken } from './utils/refresh';
+import { refreshToken } from './api/refresh';
 
 import Googlebutton from '@/components/googlebutton';
 

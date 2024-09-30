@@ -23,7 +23,7 @@ async function checkUserAuthentication() {
             });
     
             console.log('API response data:', response.data);  // Check if user data is returned
-            return { id: response.data.id};
+            return { loggedIn: false, user: response.data};
         } catch (error) {
             console.error('Initial request failed:', error.response ? error.response.data : error);
     

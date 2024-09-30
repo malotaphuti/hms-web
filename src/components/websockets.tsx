@@ -29,42 +29,47 @@ const WebSocketFile: React.FC<WebSocketFileProps> =({ room,chatId }) => {
     const user_feed = room;
 
     if (user_feed) {
-      console.log("chartID is:", room);
-      // Initialize WebSocket with generated chatId
-      test_sockRef.current = new WebSocket(`ws://localhost:8000/ws/feedback/${user_feed}/`);
+        console.log('chartID is:', room);
+        // Initialize WebSocket with generated chatId
+        test_sockRef.current = new WebSocket(
+            `ws://localhost:8000/ws/feedback/${user_feed}/`,
+        );
 
-      test_sockRef.current.onopen = () => {
-        console.log('Connected to WebSocket server');
-        test_sockRef.current?.send(JSON.stringify({ message: 'Hello Server!' }));
-      };
+        test_sockRef.current.onopen = () => {
+            console.log('Connected to WebSocket server');
+            // test_sockRef.current?.send(
+            //     JSON.stringify({ message: 'Hello Server!' }),
+            // );
+        };
 
-      // Event listener for receiving messages from the server
-      test_sockRef.current.onmessage = (e) => {
-        const data = JSON.parse(e.data);
-      
-        if (data && data.message) {
-          const message = data.message; // Ensure this is a string
-          setMessages((prevMessages) => [...prevMessages, message ]);
-        } else {
-          console.error('Received invalid message:', data);
-        }
-      };
+        // Event listener for receiving messages from the server
+        test_sockRef.current.onmessage = e => {
+            const data = JSON.parse(e.data);
 
-      // // Event listener for when the connection is closed
-      test_sockRef.current.onclose = () => {
-          console.log('Disconnected from WebSocket server');
-      };
+            if (data && data.message) {
+                console.log(data);
+                const message = data.message; // Ensure this is a string
+                setMessages(prevMessages => [...prevMessages, message]);
+            } else {
+                console.error('Received invalid message:', data);
+            }
+        };
 
-      // // Event listener for errors
-      test_sockRef.current.onerror = (error) => {
-          console.error(`WebSocket error: ${error.message}`);
-      };
+        // // Event listener for when the connection is closed
+        test_sockRef.current.onclose = () => {
+            console.log('Disconnected from WebSocket server');
+        };
 
-      return () => {
-        if (test_sockRef.current) {
-          test_sockRef.current.close();
-        }
-      };
+        // // Event listener for errors
+        test_sockRef.current.onerror = error => {
+            console.error(`WebSocket error: ${error.message}`);
+        };
+
+        return () => {
+            if (test_sockRef.current) {
+                test_sockRef.current.close();
+            }
+        };
     }
 
   }, [chatId]);
