@@ -29,6 +29,7 @@ export default function Header() {
     }
 
     if (offline) {
+        checkUserAuthentication();
         console.log('user is offline');
     }
 

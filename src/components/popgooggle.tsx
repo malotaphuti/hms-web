@@ -6,7 +6,7 @@ const RedirectPopUp = () => {
         const url =
             'http://localhost:8000/accounts/google/login/?process=login'; // URL to redirect
         const width = 400;
-        const height = 650;
+        const height = 550;
         const left = window.innerWidth / 2 - width / 2;
         const top = window.innerHeight / 2 - height / 2;
 

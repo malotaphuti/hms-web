@@ -51,17 +51,15 @@ export default function VideoPage() {
 
     return (
         <div>
-            {/*
-            // this works by the way
             <video width="320" height="240" controls>
                 <source
-                    src="http://127.0.0.1:8000/api/vd/view/1"
+                    src={`http://127.0.0.1:8000/api/vd/view/${id}`}
                     type="video/mp4"
                 />
-            </video> */}
+            </video>
 
             <HlsPlayer
-                videoSrc={`http://127.0.0.1:8000/api/vd/stream/8/${quality}.m3u8`}
+                videoSrc={`http://127.0.0.1:8000/api/vd/stream/${id}/${quality}.m3u8`}
             />
         </div>
     );

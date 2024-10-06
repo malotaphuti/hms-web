@@ -57,9 +57,6 @@ export default function googlebutton() {
 
         window.location.href = googleOAuthUrl;
 
-        // const response = await fetch('/api/google-login');
-        // const data = await response.json();
-        // window.location.href = data.url;
     };
 
     return (

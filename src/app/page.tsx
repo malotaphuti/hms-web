@@ -75,7 +75,6 @@ export default function Home() {
             <Header />
             <div className="flex justify-center flex-row w-full">
                 <h1 className="">Home Page</h1>
-                <Googlebutton />
             </div>
         </div>
     );

@@ -35,32 +35,36 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({ videoSrc }) => {
         setIsPlaying(true);
     };
 
-    const handleQualityChange = (
-        event: React.ChangeEvent<HTMLSelectElement>,
-    ) => {
-        const selectedQuality = event.target.value;
-        setQuality(selectedQuality);
-        if (hls && videoRef.current) {
-            hls.loadSource(`${videoSrc}/${selectedQuality}.m3u8`);
-            hls.attachMedia(videoRef.current);
-        }
-    };
+    if (!isPlaying) {
+        return <button onClick={handlePlay}>Play</button>;
+    }
+
+    // const handleQualityChange = (
+    //     event: React.ChangeEvent<HTMLSelectElement>,
+    // ) => {
+    //     const selectedQuality = event.target.value;
+    //     setQuality(selectedQuality);
+    //     if (hls && videoRef.current) {
+    //         hls.loadSource(`${videoSrc}/${selectedQuality}.m3u8`);
+    //         hls.attachMedia(videoRef.current);
+    //     }
+    // };
 
     return (
         <div>
-            <div>
+            {/* <div>
                 <label htmlFor="quality">Select Quality: </label>
                 <select
                     id="quality"
                     value={quality}
-                    onChange={handleQualityChange}
+                    // onChange={handleQualityChange}
                 >
                     <option value="720p">720p</option>
                     <option value="480p">480p</option>
                     <option value="360p">360p</option>
                     <option value="144p">144p</option>
                 </select>
-            </div>
+            </div> */}
             <video ref={videoRef} width="400" height="280" controls />
         </div>
     );

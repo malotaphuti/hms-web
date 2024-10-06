@@ -3,22 +3,43 @@ import Cookies from 'js-cookie';
 import { refreshToken } from './refresh';
 
 async function checkUserAuthentication() {
-    const sessionId = Cookies.get('access_token');
-    const csrf = Cookies.get('csrftoken');
+    const access_token = Cookies.get('access_token');
+    const sessionID = Cookies.get('sessionid');
+    const csrfToken = Cookies.get('csrftoken');
 
-    console.log(`access_token: ${sessionId}`);
-    Cookies.remove('messages');
-    Cookies.remove('sessionid');
+    if(sessionID){
+        console.log("User is logged in But not here")
+    }
+    
 
-    if (!sessionId) {
+    if (!access_token) {
         console.log('No access token found.');
         return { loggedIn: false, user: null };
     }else{
+        if(sessionID){
+            const response = await axios.post(
+                'http://127.0.0.1:8000/api/token/',
+                {
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                    },
+                },
+            );
+
+            console.log('created token')
+
+            Cookies.set('access_token', response.data.access, { expires: 1 });
+            Cookies.set('refresh_token', response.data.refresh, { expires: 7 });
+
+            Cookies.remove('messages');
+            Cookies.remove('sessionid');
+        }
+
         try {
             // Attempt to get the user profile with the current access token
             const response = await axios.get('http://127.0.0.1:8000/api/usr/profile', {
                 headers: {
-                    'Authorization': `Bearer ${sessionId}`,
+                    'Authorization': `Bearer ${access_token}`,
                 },
             });
     
