@@ -1,6 +1,11 @@
 import React from 'react';
 import { Button } from './ui/button';
 
+import axios from 'axios';
+
+// import for cookies
+import Cookies from 'js-cookie';
+
 const RedirectPopUp = () => {
     const handleOpenPopUp = () => {
         const url =
@@ -10,11 +15,28 @@ const RedirectPopUp = () => {
         const left = window.innerWidth / 2 - width / 2;
         const top = window.innerHeight / 2 - height / 2;
 
-        window.open(
+        const popup = window.open(
             url,
             'popupWindow',
             `width=${width},height=${height},top=${top},left=${left}`,
         );
+
+        // Check if the popup is closed
+        const checkPopupClosed = setInterval(() => {
+            if (popup.closed) {
+                clearInterval(checkPopupClosed);
+                console.log('Popup is closed');
+                // check for session
+                console.log(Cookies.get('sessionid'));
+            }
+        }, 1000);
+
+        // Run code before the popup closes
+        popup.onbeforeunload = () => {
+            console.log('Popup is about to close');
+
+            // my logic i thiink
+        };
     };
 
     return (

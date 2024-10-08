@@ -4,19 +4,13 @@ import { refreshToken } from './refresh';
 
 async function checkUserAuthentication() {
     const access_token = Cookies.get('access_token');
-    const sessionID = Cookies.get('sessionid');
     const csrfToken = Cookies.get('csrftoken');
-
-    if(sessionID){
-        console.log("User is logged in But not here")
-    }
-    
-
+ 
     if (!access_token) {
         console.log('No access token found.');
         return { loggedIn: false, user: null };
     }else{
-        if(sessionID){
+        if(access_token){
             const response = await axios.post(
                 'http://127.0.0.1:8000/api/token/',
                 {
@@ -30,9 +24,6 @@ async function checkUserAuthentication() {
 
             Cookies.set('access_token', response.data.access, { expires: 1 });
             Cookies.set('refresh_token', response.data.refresh, { expires: 7 });
-
-            Cookies.remove('messages');
-            Cookies.remove('sessionid');
         }
 
         try {

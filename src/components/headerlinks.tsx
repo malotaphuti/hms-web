@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 import RedirectPopUp from './popgooggle';
+import Googlebutton from './googlebutton';
 
 export default function headerlinks() {
     return (
@@ -39,7 +40,7 @@ export default function headerlinks() {
                     </Link>
                 </div> */}
 
-                <RedirectPopUp />
+                <Googlebutton />
             </div>
         </div>
     );
