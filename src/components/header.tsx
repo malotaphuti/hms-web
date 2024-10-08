@@ -24,22 +24,32 @@ import Headerlinks from './headerlinks';
 export default function Header() {
     const { user, loggedIn, loading, offline, error } = useAuth();
 
+    const router = useRouter();
+
     if (loading) {
         return <Loading />; // Display a loading state
     }
 
     if (offline) {
-        checkUserAuthentication();
-        console.log('user is offline');
+        <div>
+            <Headerlinks />
+        </div>;
+        console.log('user offline');
     }
 
     if (error) {
         console.log(`we have an error ${error}`); // Display error if something went wrong
-        Cookies.remove('access_token');
-        Cookies.remove('refresh_token');
+        <div>
+            <Headerlinks />
+        </div>;
         console.log('Please Log in again');
     }
 
+    if (loggedIn) {
+        {
+            user ? router.push(`/profile/${user.id}`) : router.push(`/`);
+        }
+    }
     return (
         <div className="container mx-auto w-full h-[100px] flex flex-row">
             <div className="flex flex-col justify-center">
@@ -49,12 +59,7 @@ export default function Header() {
                     <div>
                         <Headerlinks />
                     </div>
-                ) : // : error ? (
-                //     <div>
-                //         <Headerlinks />
-                //     </div>
-                // )
-                loggedIn ? (
+                ) : loggedIn ? (
                     <div>
                         {user ? (
                             <div className="flex flex-row justify-center">
@@ -64,7 +69,7 @@ export default function Header() {
                                 {/* You can include more user details if needed */}
                                 {/* <p>Email: {user.email}</p> */}
                                 <div
-                                    className="flex flex-row justify-center ml-4 mr-4 
+                                    className="flex flex-row justify-center ml-4 mr-4
                             w-[140px] h-[50px] rounded-[40px] text-white hover:bg-slate-900"
                                 >
                                     <Link
@@ -82,7 +87,7 @@ export default function Header() {
                 ) : (
                     <div className="flex flex-row justify-start">
                         {/* <div
-                            className="flex flex-row justify-center ml-4 mr-4 
+                            className="flex flex-row justify-center ml-4 mr-4
             w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-700"
                         >
                             <Link
@@ -94,7 +99,7 @@ export default function Header() {
                         </div>
 
                         <div
-                            className="flex flex-row justify-center ml-4 mr-4 
+                            className="flex flex-row justify-center ml-4 mr-4
             w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-900"
                         >
                             <Link
