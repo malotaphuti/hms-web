@@ -19,6 +19,8 @@ const Loading = React.lazy(() => import('@/app/loading'));
 import useAuth from '@/app/api/useAuth';
 // my components
 import Headerlinks from './headerlinks';
+import { getGoogleToken } from '@/app/api/google-login';
+import { getCookie } from 'cookies-next';
 // import Googlebutton from './googlebutton';
 
 export default function Header() {
@@ -26,93 +28,55 @@ export default function Header() {
 
     const router = useRouter();
 
-    if (loading) {
-        return <Loading />; // Display a loading state
-    }
+    useEffect(() => {
+        const fetchData = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+
+            if (code) {
+                console.log(code);
+                try {
+                    await getGoogleToken(code);
+
+                    // console.log(data);
+                } catch (err) {
+                    console.error('Error fetching Google token:', err);
+                }
+            } else {
+                console.log('no need to run');
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const checkAccessToken = async () => {
+            const accessToken = getCookie('access_token');
+
+            if (accessToken) {
+                if (user) {
+                    router.push(`/profile/${user.id}`);
+                }
+            }
+        };
+
+        checkAccessToken();
+    }, [router]);
 
     if (offline) {
-        <div>
-            <Headerlinks />
-        </div>;
-        console.log('user offline');
+        return (
+            <div className="flex flex-row justify-center items-center h-[80px] w-full">
+                <Headerlinks />
+            </div>
+        );
     }
 
     if (error) {
-        console.log(`we have an error ${error}`); // Display error if something went wrong
-        <div>
-            <Headerlinks />
-        </div>;
-        console.log('Please Log in again');
-    }
-
-    if (loggedIn) {
-        {
-            user ? router.push(`/profile/${user.id}`) : router.push(`/`);
-        }
-    }
-    return (
-        <div className="container mx-auto w-full h-[100px] flex flex-row">
-            <div className="flex flex-col justify-center">
-                {loading ? (
-                    <div>Loading...</div>
-                ) : offline ? (
-                    <div>
-                        <Headerlinks />
-                    </div>
-                ) : loggedIn ? (
-                    <div>
-                        {user ? (
-                            <div className="flex flex-row justify-center">
-                                <h1 className="flex flex-col justify-center">
-                                    Welcome back, {user.first_name}!
-                                </h1>
-                                {/* You can include more user details if needed */}
-                                {/* <p>Email: {user.email}</p> */}
-                                <div
-                                    className="flex flex-row justify-center ml-4 mr-4
-                            w-[140px] h-[50px] rounded-[40px] text-white hover:bg-slate-900"
-                                >
-                                    <Link
-                                        href="/feedback/1"
-                                        className="flex flex-col justify-center"
-                                    >
-                                        feedback page
-                                    </Link>
-                                </div>
-                            </div>
-                        ) : (
-                            <div>No user data...</div>
-                        )}
-                    </div>
-                ) : (
-                    <div className="flex flex-row justify-start">
-                        {/* <div
-                            className="flex flex-row justify-center ml-4 mr-4
-            w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-700"
-                        >
-                            <Link
-                                href="/"
-                                className="flex flex-col justify-center"
-                            >
-                                Home
-                            </Link>
-                        </div>
-
-                        <div
-                            className="flex flex-row justify-center ml-4 mr-4
-            w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-900"
-                        >
-                            <Link
-                                href="/login"
-                                className="flex flex-col justify-center"
-                            >
-                                Login here
-                            </Link>
-                        </div> */}
-                    </div>
-                )}
+        return (
+            <div className="flex flex-row justify-center items-center h-[80px] w-full">
+                <Headerlinks />
             </div>
-        </div>
-    );
+        );
+    }
 }
-

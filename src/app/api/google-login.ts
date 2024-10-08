@@ -1,15 +1,12 @@
 // app/api/google-login.js
 import axios from 'axios';
-import { setCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
+
 
 export function getGoogleToken(code: string): void {
-    // const { code } = req.query;
 
-    // if (!code) {
-    //     return res.status(400).json({ error: 'No code provided' });
-    // }
+    // console.log(code);
 
-    console.log(code);
 
     const fetchData = async () => {
         try {
@@ -28,7 +25,7 @@ export function getGoogleToken(code: string): void {
                 }
             });
 
-            // console.log(tokenResponse.data);
+            console.log(tokenResponse.data.access_token);
     
             const { access_token, id_token } = tokenResponse.data;
     
@@ -37,7 +34,8 @@ export function getGoogleToken(code: string): void {
                 access_token,
                 id_token,
             });
-            // console.log('User authenticated:', response.data);
+            
+            console.log('User authenticated:', response.data);
 
             // create a cookie
             if(response.data){
@@ -52,16 +50,4 @@ export function getGoogleToken(code: string): void {
     };
 
     fetchData();
-
-    
-
-    // try {
-    //     const response = await axios.post('http://localhost:8000/dj-rest-auth/google/', {
-    //         code,
-    //     });
-
-    //     res.status(200).json(response.data);
-    // } catch (error) {
-    //     res.status(500).json({ error: 'Failed to authenticate' });
-    // }
 }
