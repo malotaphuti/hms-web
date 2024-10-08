@@ -1,33 +1,67 @@
-import axios from "axios";
-// import cheerio from 'cheerio';
+// app/api/google-login.js
+import axios from 'axios';
+import { setCookie } from 'cookies-next';
 
-// interface Url {
-//     url: string;
-//     // Add other user fields if needed
-// }
+export function getGoogleToken(code: string): void {
+    // const { code } = req.query;
 
-async function googlelogin() {
+    // if (!code) {
+    //     return res.status(400).json({ error: 'No code provided' });
+    // }
 
-    const url = 'http://localhost:8000/accounts/google/login/';
+    console.log(code);
 
-    console.log('from the frontend API request');
+    const fetchData = async () => {
+        try {
 
-    // const response = await axios.get<Url>(url);
-    const response = await axios.get(url);
+            const callbackUrl = 'http://localhost:3000/';
+            // Exchange the authorization code for an access token
+            const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
+                code: code,
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET,
+                redirect_uri: callbackUrl,
+                grant_type: 'authorization_code',
+            }, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
 
-    // console.log(`the OG:${response.data}`);
+            // console.log(tokenResponse.data);
+    
+            const { access_token, id_token } = tokenResponse.data;
+    
+            // Send the tokens to your Django backend
+            const response = await axios.post('http://localhost:8000/dj-rest-auth/google/', {
+                access_token,
+                id_token,
+            });
+            // console.log('User authenticated:', response.data);
 
-    // Use cheerio to load the HTML and extract the CSRF token
-    // const $ = cheerio.load(response.data);
+            // create a cookie
+            if(response.data){
+                // create a cookie
+                setCookie('access_token', response.data.access , { maxAge: 60 * 60 * 2 }); // Expires in 2 hours
+            }
+    
+            // return response.data;
+        } catch (error) {
+            console.error('Error during authentication:', error);
+        }
+    };
 
-    // Find the input with the CSRF token
-    // const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    fetchData();
 
-    // console.log(`Extracted CSRF token: ${csrfToken}`);
+    
 
-    // return { token:csrfToken, url: response.data };
-    return {url: response.data };
+    // try {
+    //     const response = await axios.post('http://localhost:8000/dj-rest-auth/google/', {
+    //         code,
+    //     });
 
+    //     res.status(200).json(response.data);
+    // } catch (error) {
+    //     res.status(500).json({ error: 'Failed to authenticate' });
+    // }
 }
-
-export { googlelogin };
