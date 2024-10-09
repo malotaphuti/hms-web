@@ -10,20 +10,17 @@ import { refreshToken } from '@/app/api/refresh';
 
 import checkUserAuthentication from '@/app/api/authentication';
 
-// import for cookies
-import Cookies from 'js-cookie';
-
 // lazy component
 const Loading = React.lazy(() => import('@/app/loading'));
 // hooks
 import useAuth from '@/app/api/useAuth';
 // my components
-import Headerlinks from './headerlinks';
 import { getGoogleToken } from '@/app/api/google-login';
 import { getCookie } from 'cookies-next';
-// import Googlebutton from './googlebutton';
 
-export default function Header() {
+import CookieChecker from '@/components/cookiechecker';
+
+export default function Success() {
     const { user, loggedIn, loading, offline, error } = useAuth();
 
     const router = useRouter();
@@ -52,9 +49,7 @@ export default function Header() {
 
     useEffect(() => {
         const checkAccessToken = async () => {
-            const accessToken = getCookie('access_token');
-
-            if (accessToken) {
+            if (loggedIn) {
                 if (user) {
                     router.push(`/profile/${user.id}`);
                 }
@@ -64,19 +59,45 @@ export default function Header() {
         checkAccessToken();
     }, [router]);
 
-    if (offline) {
-        return (
-            <div className="flex flex-row justify-center items-center h-[80px] w-full">
-                <Headerlinks />
-            </div>
-        );
-    }
+    return (
+        <div>
+            {loading ? (
+                <div>
+                    <h1>Loading...</h1>
+                    <p>Please wait while we load your data.</p>
+                </div>
+            ) : offline ? (
+                <div>
+                    <h1>Offline</h1>
+                    <p>
+                        You are currently offline. Please check your internet
+                        connection.
+                    </p>
+                </div>
+            ) : loggedIn ? (
+                user ? (
+                    <div>
+                        {/* <h1>Welcome back, {user.username}!</h1>
+                        <p>You are logged in.</p>
+                        <p>Email: {user.email}</p> */}
 
-    if (error) {
-        return (
-            <div className="flex flex-row justify-center items-center h-[80px] w-full">
-                <Headerlinks />
-            </div>
-        );
-    }
+                        <Link href={`/profile/${user.id}`}>got to profile</Link>
+                    </div>
+                ) : (
+                    <div>
+                        <h1>Welcome back!</h1>
+                        <p>
+                            You are logged in, but we couldn't retrieve your
+                            user information.
+                        </p>
+                    </div>
+                )
+            ) : (
+                <div>
+                    <h1>Hello, Guest!</h1>
+                    <p>Please log in to continue.</p>
+                </div>
+            )}
+        </div>
+    );
 }
