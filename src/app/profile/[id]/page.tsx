@@ -7,21 +7,20 @@ import React from 'react';
 // components
 import Logout from '@/components/logout';
 import { Label } from '@/components/ui/label';
+import ProfileDestNav from '../../../components/profileDestNav';
+import Viewassignments from '../../../components/viewassignments';
 
 export default function profile() {
     const { user, loggedIn, loading, offline, error } = useAuth();
 
     const router = useRouter();
 
-    if(loggedIn){
+    if (loggedIn) {
         return (
-            <div>
-                <div className='h-[50px] w-[200px] px-4 flex flex-row justify-between'>
-                <Label className='flex flex-col items-center h-[50px]'>
-                    Logout here:
-                </Label>
-                <Logout />
-                </div>
+            <div className="flex flex-col items-center w-full">
+                <ProfileDestNav />
+
+                <Viewassignments />
             </div>
         );
     }

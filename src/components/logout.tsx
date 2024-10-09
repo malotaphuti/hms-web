@@ -21,22 +21,25 @@ export default function logout() {
     const handleLogout = () => {
         if (access_token) {
             deleteCookie('access_token');
+            deleteCookie('user_data');
             router.push('/');
         } else if (refresh_token) {
             deleteCookie('refresh_token');
+            deleteCookie('user_data');
             router.push('/');
         } else {
             console.log('user not logged in');
+            router.push('/');
         }
     };
     return (
         <div>
             <Button
-                className='flex flex-row justify-center ml-4 mr-4 
-                            w-[50px] h-[50px] rounded-[50px] text-white hover:bg-slate-700"'
+                className='flex flex-row ml-4 mr-4 justify-center
+                            w-[120px] h-[50px] rounded-[50px] text-white hover:bg-slate-600"'
                 onClick={handleLogout}
             >
-                <MdOutlineLogout />
+                <p className="mx-2">Logout</p> <MdOutlineLogout />
             </Button>
         </div>
     );

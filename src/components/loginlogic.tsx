@@ -14,6 +14,7 @@ import axios from 'axios';
 
 // import for cookies
 import Cookies from 'js-cookie';
+import useAuth from '@/app/api/useAuth';
 
 const csrfToken = Cookies.get('csrftoken');
 
@@ -27,19 +28,21 @@ interface Props {
 const loginlogic = ({ onSubmit }: any) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    const { user } = useAuth();
+
     const [formData, setFormData] = useState<Props[]>({
         username: '',
         password: '',
     });
-    
+
     const [error, setError] = useState('');
 
     const router = useRouter();
 
     const handleChange = (e: any) => {
-        setFormData({ 
-            ...formData, 
-            [e.target.name]: e.target.value
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
         });
     };
 
@@ -49,18 +52,20 @@ const loginlogic = ({ onSubmit }: any) => {
             // set is logged in true
             setIsLoggedIn(true);
             // successfully checked if the user is logged in
-            router.push('/');
+            if (user) {
+                router.push(`/profile/${user.id}`);
+            }
         }
     }, []);
 
-    const handleSubmit = async (e:any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault(); // Prevent the default form submission (which would be a GET request)
 
         const data = {
             username: e.target.username.value,
-            password: e.target.password.value
+            password: e.target.password.value,
         };
-    
+
         // let  me try to use axios
         try {
             const response = await axios.post(
@@ -83,8 +88,10 @@ const loginlogic = ({ onSubmit }: any) => {
 
                 // wait 3 seconds before redirecting
                 const timer = setTimeout(() => {
-                    router.push('/');
-                }, 3000);
+                    if (user) {
+                        router.push(`/profile/${user.id}`);
+                    }
+                }, 1000);
             } else {
                 // console.log("Log in failed!");
                 setError('error: Log in failed!');
@@ -116,37 +123,36 @@ const loginlogic = ({ onSubmit }: any) => {
         }
     };
     return (
-    
-    <form onSubmit={handleSubmit}
-        className='flex flex-col justify-center items-center'
-    >
-        <Label>Login Here:</Label>
-        <Input placeholder='Username' 
-            className='m-8'
-            type='text'
-            name='username'
-            value={formData.username}
-            onChange={handleChange}
-            />
-        <Input placeholder='password' className='m-8'
-            type='password'
-            name='password'
-            value={formData.password}
-            onChange={handleChange}
-            />
-        <Button 
-            type='submit'
+        <form
+            onSubmit={handleSubmit}
+            className="flex flex-col justify-center items-center"
         >
-            Login
-        </Button>
-        {error && (
-        <Alert>
-            <AlertTitle>Alert</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-        </Alert>
-    )}
-    </form>
-  )
-}
+            <Label>Login Here:</Label>
+            <Input
+                placeholder="Username"
+                className="m-8"
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+            />
+            <Input
+                placeholder="password"
+                className="m-8"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+            />
+            <Button type="submit">Login</Button>
+            {error && (
+                <Alert>
+                    <AlertTitle>Alert</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                </Alert>
+            )}
+        </form>
+    );
+};
 
 export default loginlogic
