@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { refreshToken } from '@/app/api/refresh';
-import { getCookie } from 'cookies-next';
+import { getCookie,setCookie } from 'cookies-next';
 
 interface User {
     id: number;
     username: string;
     email: string;
+    student_number: string
     // Add other user fields if needed
 }
 
@@ -30,15 +31,35 @@ const useAuth = () => {
     const access_token = getCookie('access_token');
 
     const checkUserAuthentication = async () => {
+        const accessToken = getCookie('access_token');
+        const userData = getCookie('user_data');
+    
+        if (!accessToken) {
+            // If there's no access token, do nothing
+            return;
+        }
+    
+        if (userData) {
+            // If user data is already stored in the cookie, use it
+            setAuthState({
+                user: JSON.parse(userData),
+                loggedIn: true,
+                loading: false,
+                offline: false,
+                error: null,
+            });
+            return;
+        }
+    
         try {
-            // Make request to your API to get the user profile
             const response = await axios.get<User>('http://127.0.0.1:8000/api/usr/profile', {
                 headers: {
-                    'Authorization': `Bearer ${access_token}`,
+                    'Authorization': `Bearer ${accessToken}`,
                     'X-CSRFToken': csrfToken || '', // Include CSRF token if needed
                 },
             });
-            // On successful response, update the state with user data
+    
+            // On successful response, update the state with user data and store it in a cookie
             setAuthState({
                 user: response.data,
                 loggedIn: true,
@@ -46,14 +67,15 @@ const useAuth = () => {
                 offline: false,
                 error: null,
             });
-
+            setCookie('user_data', JSON.stringify(response.data), 1); 
+    
         } catch (error: any) {
             if (error.response && error.response.status === 401) {
                 // Attempt to refresh token if authentication fails
                 try {
                     await refreshToken();
                     const newAccessToken = getCookie('access_token');
-
+    
                     if (newAccessToken) {
                         const retryResponse = await axios.get<User>('http://127.0.0.1:8000/api/usr/profile', {
                             headers: {
@@ -68,11 +90,12 @@ const useAuth = () => {
                             offline: false,
                             error: null,
                         });
+                        setCookie('user_data', JSON.stringify(retryResponse.data), 1); // Store user data in a cookie for 1 day
                     } else {
-                        setAuthState({ user: null, loggedIn: false, loading: false,offline: true, error: 'Token refresh failed' });
+                        setAuthState({ user: null, loggedIn: false, loading: false, offline: true, error: 'Token refresh failed' });
                     }
                 } catch (refreshError) {
-                    setAuthState({ user: null, loggedIn: false, loading: false,offline: true, error: 'Token refresh failed' });
+                    setAuthState({ user: null, loggedIn: false, loading: false, offline: true, error: 'Token refresh failed' });
                 }
             } else {
                 setAuthState({
@@ -85,11 +108,13 @@ const useAuth = () => {
             }
         }
     };
-
+    
     // Run checkUserAuthentication when the component mounts
     useEffect(() => {
         checkUserAuthentication();
     }, []);
+    
+
 
     return authState;
 };
