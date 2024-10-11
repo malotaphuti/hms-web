@@ -4,25 +4,26 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Landingpage from '@/components/landingpage';
 
 // components
 import Header from '@/components/header';
 
 // axios
-import axios from 'axios';
+//import axios from 'axios';
 
 // import { refreshToken } from './api/refresh';
 
 // import Googlebutton from '@/components/googlebutton';
 
 // import { getGoogleTokens } from '../app/api/google-login';
-import { getGoogleToken } from '../app/api/google-login';
+// import { getGoogleToken } from '../app/api/google-login';
 import useAuth from './api/useAuth';
-import headerlinks from '../components/headerlinks';
-import Headerlinks from '../components/headerlinks';
+// import headerlinks from '../components/headerlinks';
+// import Headerlinks from '../components/headerlinks';
 
 export default function Home() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
     const router = useRouter();
 
     const { user, loggedIn, loading, offline, error } = useAuth();
@@ -53,6 +54,7 @@ export default function Home() {
             <Header />
             <div className="flex justify-center flex-row w-full">
                 <h1 className="">Home Page</h1>
+                <Landingpage />
             </div>
         </div>
     );
