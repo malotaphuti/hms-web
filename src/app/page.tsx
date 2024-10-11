@@ -38,9 +38,10 @@ export default function Home() {
         return (
             <div className="grid grid-rows-[20px_1fr_20px] min-h-screen gap-16 sm:p-3 font-[family-name:var(--font-geist-sans)]">
                 <Header />
+               
                 <div className="flex justify-center flex-row w-full">
-                    <h1 className="">Home Page</h1>
-                </div>
+                <Landingpage />
+            </div>
             </div>
         );
     }
@@ -53,7 +54,6 @@ export default function Home() {
         <div className="grid grid-rows-[20px_1fr_20px] min-h-screen gap-16 sm:p-3 font-[family-name:var(--font-geist-sans)]">
             <Header />
             <div className="flex justify-center flex-row w-full">
-                <h1 className="">Home Page</h1>
                 <Landingpage />
             </div>
         </div>
