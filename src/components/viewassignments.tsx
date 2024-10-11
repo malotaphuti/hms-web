@@ -2,29 +2,19 @@ import useVideoData from '@/app/api/useVideoData';
 import Link from 'next/link';
 import React from 'react';
 import { Button } from './ui/button';
+import viewAssignment from '@/app/api/useAssignment';
+import useAssignments from '@/app/api/useAssignment';
 
 export default function viewassignments() {
-    const { videodata, notfound, found, loading, error } = useVideoData();
+    const { assignmentData, a_notfound, a_found, a_loading, a_error } =
+        useAssignments();
 
     // list/assign/
-    if (videodata) {
+    if (assignmentData) {
         return (
-            <div>
-                //
-                {videodata &&
-                    videodata.map(video => (
-                        <div
-                            key={video.id}
-                            className="px-2 h-[60px] flex flex-row items-center"
-                        >
-                            {video.title} - watch video - assignment
-                            <Button className="mx-2">
-                                <Link href={`/videos/${video.id}/360p`}>
-                                    watch
-                                </Link>
-                            </Button>
-                        </div>
-                    ))}
+            <div className="flex flex-row">
+                <h1>{assignmentData.title}</h1>
+                <p>{assignmentData.description}</p>
             </div>
         );
     }

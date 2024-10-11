@@ -19,11 +19,8 @@ export default function logout() {
     const router = useRouter();
 
     const handleLogout = () => {
-        if (access_token) {
+        if (access_token || refresh_token) {
             deleteCookie('access_token');
-            deleteCookie('user_data');
-            router.push('/');
-        } else if (refresh_token) {
             deleteCookie('refresh_token');
             deleteCookie('user_data');
             router.push('/');

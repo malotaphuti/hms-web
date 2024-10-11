@@ -25,6 +25,7 @@ export default function Success() {
 
     const router = useRouter();
 
+    
     useEffect(() => {
         const fetchData = async () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -59,11 +60,16 @@ export default function Success() {
         checkAccessToken();
     }, [router]);
 
+    if (user) {
+        return <CookieChecker />;
+    }
+
     return (
         <div>
             {loading ? (
                 <div>
-                    <h1>Loading...</h1>
+                    <Loading />
+                    <CookieChecker />
                     <p>Please wait while we load your data.</p>
                 </div>
             ) : offline ? (
