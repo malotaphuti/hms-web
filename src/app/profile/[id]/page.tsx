@@ -15,10 +15,15 @@ export default function profile() {
 
     const router = useRouter();
 
-    if (loggedIn) {
+    if (loggedIn || user) {
+        console.log(user);
         return (
             <div className="flex flex-col items-center w-full">
                 <ProfileDestNav />
+
+                <h1>
+                    {user?.student_number} - {user?.email}
+                </h1>
 
                 <Viewassignments />
             </div>

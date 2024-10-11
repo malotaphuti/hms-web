@@ -7,6 +7,7 @@ interface User {
     id: number;
     username: string;
     email: string;
+    first_name: string,
     student_number: string
     // Add other user fields if needed
 }
@@ -33,11 +34,15 @@ const useAuth = () => {
     const checkUserAuthentication = async () => {
         const accessToken = getCookie('access_token');
         const userData = getCookie('user_data');
+
+        
     
         if (!accessToken) {
             // If there's no access token, do nothing
             return;
         }
+
+        
     
         if (userData) {
             // If user data is already stored in the cookie, use it
@@ -48,9 +53,13 @@ const useAuth = () => {
                 offline: false,
                 error: null,
             });
+
+            // console.log(authState);
+            // console.log(JSON.parse(userData));
             return;
         }
-    
+        
+        /** 
         try {
             const response = await axios.get<User>('http://127.0.0.1:8000/api/usr/profile', {
                 headers: {
@@ -106,7 +115,7 @@ const useAuth = () => {
                     error: error.message || 'Error fetching user data',
                 });
             }
-        }
+        }*/
     };
     
     // Run checkUserAuthentication when the component mounts
