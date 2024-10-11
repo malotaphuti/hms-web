@@ -9,8 +9,7 @@ export default function headerlinks() {
         <div>
             <div className="flex flex-row justify-start">
                 <div
-                    className="flex flex-row justify-center ml-4 mr-4 
-            w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-700"
+                    className="flex flex-row justify-center ml-4 mr-4 w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-700"
                 >
                     <Link href="/" className="flex flex-col justify-center">
                         Home
@@ -18,8 +17,7 @@ export default function headerlinks() {
                 </div>
 
                 <div
-                    className="flex flex-row justify-center ml-4 mr-4 
-            w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-900"
+                    className="flex flex-row justify-center ml-4 mr-4 w-[130px] h-[50px] rounded-[40px] text-white hover:bg-slate-900"
                 >
                     <Link
                         href="/login"
