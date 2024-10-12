@@ -47,8 +47,6 @@ export function getGoogleToken(code: string): void {
                 setCookie('refresh_token', response.data.refresh_token , { maxAge: 60 * 60 * 6 }); // Expires in 2 hours
                 setCookie('is_lect', user.is_lecturer , { maxAge: 60 * 60 * 2 }); 
             }else{
-                setCookie('access_token', response.data.access_token , { maxAge: 60 * 60 * 2 }); // Expires in 2 hours
-                setCookie('refresh_token', response.data.refresh_token , { maxAge: 60 * 60 * 6 }); // Expires in 2 hours
                 setCookie('is_lect', user.is_lecturer , { maxAge: 60 * 60 * 2 });
             }
     
