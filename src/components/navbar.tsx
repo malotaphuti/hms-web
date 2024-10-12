@@ -15,7 +15,7 @@ export default function Navbar() {
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center">
                         <Link href="/" className="text-2xl font-bold text-gray-900">
-                            My Website
+                            HMS Website
                         </Link>
                     </div>
 
@@ -24,7 +24,7 @@ export default function Navbar() {
                         <Link href="/" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                             Home
                         </Link>
-                        <Link href="/about" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                        <Link href="/aboutUs" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                             About Us
                         </Link>
                         <Link href="/signin" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
@@ -74,7 +74,7 @@ export default function Navbar() {
                     <Link href="/" className="text-gray-700 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">
                         Home
                     </Link>
-                    <Link href="/about" className="text-gray-700 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">
+                    <Link href="/aboutUs" className="text-gray-700 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">
                         About Us
                     </Link>
                     <Link href="/signin" className="text-gray-700 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">
@@ -88,4 +88,3 @@ export default function Navbar() {
         </nav>
     );
 }
-
