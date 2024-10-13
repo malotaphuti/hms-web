@@ -152,7 +152,7 @@ const loginlogic = ({ onSubmit }: any) => {
             <a href="#" className="text-purple-600 hover:underline mb-2">Forgot Password?</a>
             {/* <span className="text-gray-600">Don't have an account?</span> */}
             {/* <a href="#" className="text-purple-600 hover:underline">Sign in here</a> */}
-            <div className='h-[60px] w-full flex flex-row justify-center items-center mt-3 mb-3'>
+            <div className='h-[60px] w-full flex flex-row justify-center items-center mt-3 mb-3 bg-gray-950'>
                 <GoogleLoginButton />
             </div>
         </div>
