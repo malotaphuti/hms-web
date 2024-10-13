@@ -90,3 +90,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.active-link {
+  box-shadow: 0 4px 20px rgba(160, 85, 227, 0.5); 
+}
+

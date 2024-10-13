@@ -9,6 +9,8 @@ import Landingpage from '@/components/landingpage';
 // components
 import Header from '@/components/header';
 
+import HomePage from '@/components/homepage';
+
 // axios
 //import axios from 'axios';
 
@@ -40,7 +42,7 @@ export default function Home() {
             //     <Header />
                
                 <div className="flex justify-center flex-row w-full">
-                <Landingpage />
+                <HomePage />
             </div>
             // </div>
         );
@@ -54,10 +56,11 @@ export default function Home() {
         <div className="grid grid-rows-[20px_1fr_20px] min-h-screen gap-16 sm:p-3 font-[family-name:var(--font-geist-sans)]">
             <Header />
             <div className="flex justify-center flex-row w-full">
-                <Landingpage />
+                <HomePage />
             </div>
         </div>
     );
+
 }
 
 
