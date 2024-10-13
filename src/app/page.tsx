@@ -36,13 +36,13 @@ export default function Home() {
 
     if (offline) {
         return (
-            <div className="grid grid-rows-[20px_1fr_20px] min-h-screen gap-16 sm:p-3 font-[family-name:var(--font-geist-sans)]">
-                <Header />
+            // <div className="grid grid-rows-[20px_1fr_20px] min-h-screen gap-16 sm:p-3 font-[family-name:var(--font-geist-sans)]">
+            //     <Header />
                
                 <div className="flex justify-center flex-row w-full">
                 <Landingpage />
             </div>
-            </div>
+            // </div>
         );
     }
 
