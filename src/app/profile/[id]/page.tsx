@@ -1,8 +1,9 @@
 'use client';
 
+import React from 'react';
 import useAuth from '@/app/api/useAuth';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+
 
 // components
 import Logout from '@/components/logout';

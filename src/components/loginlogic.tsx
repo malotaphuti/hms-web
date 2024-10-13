@@ -123,36 +123,43 @@ const loginlogic = ({ onSubmit }: any) => {
         }
     };
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="flex flex-col justify-center items-center"
+        <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
+        <Label className="text-2xl font-bold text-purple-600 mb-8">Login Here:</Label>
+        <Input
+            placeholder="Username"
+            className="m-2 p-3 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-purple-500"
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+        />
+        <Input
+            placeholder="Password"
+            className="m-2 p-3 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-purple-500"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+        />
+        <Button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-2 rounded-lg mt-4 shadow-md transition duration-300 ease-in-out"
         >
-            <Label>Login Here:</Label>
-            <Input
-                placeholder="Username"
-                className="m-8"
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-            />
-            <Input
-                placeholder="password"
-                className="m-8"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-            />
-            <Button type="submit">Login</Button>
-            {error && (
-                <Alert>
-                    <AlertTitle>Alert</AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
-                </Alert>
-            )}
-        </form>
-    );
+            Login
+        </Button>
+        <div className="flex flex-col items-center mt-4">
+            <a href="#" className="text-purple-600 hover:underline mb-2">Forgot Password?</a>
+            <span className="text-gray-600">Don't have an account?</span>
+            <a href="#" className="text-purple-600 hover:underline">Sign in here</a>
+        </div>
+        {error && (
+            <Alert className="mt-4">
+                <AlertTitle className="font-semibold text-red-600">Alert</AlertTitle>
+                <AlertDescription className="text-red-500">{error}</AlertDescription>
+            </Alert>
+        )}
+    </form>
+);
 };
 
-export default loginlogic
+export default loginlogic;
