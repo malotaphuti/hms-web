@@ -55,7 +55,7 @@ const useAuth = () => {
             });
 
             // console.log(authState);
-            // console.log(JSON.parse(userData));
+            console.log(JSON.parse(userData));
             return;
         }
         
