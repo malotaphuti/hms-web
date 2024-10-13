@@ -14,9 +14,11 @@ import Viewassignments from '../../../components/viewassignments';
 export default function profile() {
     const { user, loggedIn, loading, offline, error } = useAuth();
 
+    console.log(user);
+
     const router = useRouter();
 
-    if (loggedIn || user) {
+    if (user) {
         console.log(user);
         return (
             <div className="flex flex-col items-center w-full">

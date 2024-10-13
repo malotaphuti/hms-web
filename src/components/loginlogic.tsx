@@ -15,6 +15,7 @@ import axios from 'axios';
 // import for cookies
 import Cookies from 'js-cookie';
 import useAuth from '@/app/api/useAuth';
+import GoogleLoginButton from './googlebutton';
 
 const csrfToken = Cookies.get('csrftoken');
 
@@ -53,7 +54,7 @@ const loginlogic = ({ onSubmit }: any) => {
             setIsLoggedIn(true);
             // successfully checked if the user is logged in
             if (user) {
-                router.push(`/profile/${user.id}`);
+                router.push(`/dashboard/${user.id}`);
             }
         }
     }, []);
@@ -149,8 +150,11 @@ const loginlogic = ({ onSubmit }: any) => {
         </Button>
         <div className="flex flex-col items-center mt-4">
             <a href="#" className="text-purple-600 hover:underline mb-2">Forgot Password?</a>
-            <span className="text-gray-600">Don't have an account?</span>
-            <a href="#" className="text-purple-600 hover:underline">Sign in here</a>
+            {/* <span className="text-gray-600">Don't have an account?</span> */}
+            {/* <a href="#" className="text-purple-600 hover:underline">Sign in here</a> */}
+            <div className='h-[60px] w-full flex flex-row justify-center items-center mt-3 mb-3'>
+                <GoogleLoginButton />
+            </div>
         </div>
         {error && (
             <Alert className="mt-4">
