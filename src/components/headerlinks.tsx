@@ -24,13 +24,7 @@ export default function headerlinks() {
 
                 <Googlebutton />
             </div>
-            <div className="mr-4">
-                {/* Using the Radix Label component */}
-                <Label className="text-black font-bold text-xl">
-                    HMS
-                </Label>
 
-            </div>
         </div>
     );
 }
